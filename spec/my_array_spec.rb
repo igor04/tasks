@@ -83,5 +83,20 @@ describe "MyArray" do
 
       expect(count).to eq 10000
     end
+
+    it "should repeatedly work" do
+      array = (1..10).to_a
+      my_array = MyArray.new array
+
+      3.times do
+        count = 0
+        my_array.each do |index|
+          expect(array[index]).not_to be nil
+          count += 1
+        end
+
+        expect(count).to eq 10
+      end
+    end
   end
 end

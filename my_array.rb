@@ -1,3 +1,13 @@
+# MyArray was implemented because of recursion has restriction with stack level,
+# and with big size array exeption `Stack level too deep` raises.
+#
+# MyArray contains #each method which is built on recursion, with separation
+# on smaller parts(lines). Each part(line) contains limited number(MAX_DEEP) of items.
+# So we can work not only with array which size is MAX_DEEP, but also with
+# array which size is MAX_DEEP * MAX_DEEP
+#
+# MAX_DEEP - number when the stack level is not too deep
+
 class MyArray
   MAX_DEEP = 4000
 
@@ -8,19 +18,15 @@ class MyArray
 
     @origin = array
     @size = array.size
-    @index = 0
   end
 
   def each(&block)
-    raise ArgumentError unless block_given?
+    raise ArgumentError unless block
 
+    @index = 0
     @block = block
 
-    if size < MAX_DEEP
-      each_item size
-    else
-      each_line 0
-    end
+    each_line
   end
 
   private
@@ -34,7 +40,7 @@ class MyArray
     each_item max
   end
 
-  def each_line(line)
+  def each_line(line = 0)
     to = line * MAX_DEEP + MAX_DEEP
     to = to > size ? size : to
 
